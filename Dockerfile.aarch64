@@ -15,7 +15,7 @@ RUN set -ex; \
     rm -rf /var/cache/apk/*; \
     usermod -s /bin/sh -U soju; \
     mkdir -p /var/lib/soju/logs /etc/ssl/certs /home/soju/uploads /etc/soju /run/soju; \
-    chown -R soju:soju /etc/ssl/certs/soju /home/soju/uploads /run/soju
+    chown -R soju:soju /home/soju/uploads /run/soju
 
 VOLUME [ "/var/lib/soju" ]
 VOLUME [ "/etc/ssl/certs" ]
