@@ -1,7 +1,6 @@
 listen ircs://:6697
 listen unix+admin://
 title Soju
-tls /etc/ssl/certs/soju/soju.crt /etc/ssl/certs/soju/soju.key
 db sqlite3 /var/lib/soju/main.db
 message-store fs /var/lib/soju/logs
 enable-user-on-auth true
