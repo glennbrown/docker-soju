@@ -1,0 +1,28 @@
+FROM --platform=linux/arm64/v8 docker.io/arm64v8/alpine AS alpine
+
+RUN set -ex; \
+    echo "@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories; \
+    apk update; \
+    apk add shadow ca-certificates lz4; \
+    apk upgrade; \
+    apk cache clean; \
+    rm -rf /var/cache/apk/*
+
+RUN set -ex; \
+    apk update; \
+    apk add tini soju@testing soju-doc@testing soju-utils@testing; \
+    apk cache clean; \
+    rm -rf /var/cache/apk/*; \
+    usermod -s /bin/sh -U soju; \
+    mkdir -p /var/lib/soju/logs /etc/ssl/certs/soju /home/soju/uploads /etc/soju /run/soju; \
+    chown -R soju:soju /etc/ssl/certs/soju /home/soju/uploads /run/soju
+
+VOLUME [ "/var/lib/soju" ]
+VOLUME [ "/etc/ssl/certs/soju" ]
+VOLUME [ "/home/soju/uploads" ]
+VOLUME [ "/etc/soju" ]
+
+COPY --chmod=0755 docker-entrypoint.sh /docker-entrypoint.sh
+COPY --chown=soju:soju config.default /etc/soju/config.default
+
+ENTRYPOINT [ "/sbin/tini", "--", "/docker-entrypoint.sh" ]
