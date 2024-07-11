@@ -23,6 +23,6 @@ VOLUME [ "/home/soju/uploads" ]
 VOLUME [ "/etc/soju" ]
 
 COPY --chmod=0755 docker-entrypoint.sh /docker-entrypoint.sh
-COPY --chown=soju:soju config.default /etc/soju/config.default
+COPY --chown=soju:soju config.default /root/soju_config.default
 
 ENTRYPOINT [ "/sbin/tini", "--", "/docker-entrypoint.sh" ]
