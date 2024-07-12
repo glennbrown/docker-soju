@@ -1,6 +1,8 @@
 #!/bin/sh
 
-if ! [ -r /etc/ssl/certs/$(hostname --fqdn).crt ] || ! [ -r /etc/ssl/certs/$(hostname --fqdn).key ]
+set -eux
+
+if ! [ -r /etc/ssl/certs/soju/soju.crt ] || ! [ -r /etc/ssl/certs/soju/soju.key ]
 then
     echo Cannot find Soju certificate and/or key. 1>&2
     ls -la /etc/ssl/certs/soju 1>&2
