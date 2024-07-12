@@ -1,28 +1,31 @@
-FROM --platform=linux/arm64/v8 docker.io/arm64v8/alpine AS alpine
+FROM --platform=linux/arm64/v8 docker.io/arm64v8/debian:trixie-slim AS trixie
 
 RUN set -ex; \
-    echo "@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories; \
-    apk update; \
-    apk add shadow ca-certificates lz4; \
-    apk upgrade; \
-    apk cache clean; \
-    rm -rf /var/cache/apk/*
+    DEBIAN_FRONTEND=noninteractive; \
+    export DEBIAN_FRONTEND; \
+    apt -y update; \
+    apt -y install --no-install-recommends ca-certificates lz4; \
+    apt -y dist-upgrade; \
+    apt -y autoremove; \
+    apt -y clean; \
+    rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 RUN set -ex; \
-    apk update; \
-    apk add tini soju@testing soju-doc@testing soju-utils@testing; \
-    apk cache clean; \
-    rm -rf /var/cache/apk/*; \
-    usermod -s /bin/sh -U soju; \
-    mkdir -p /var/lib/soju/logs /etc/ssl/certs /home/soju/uploads /etc/soju /run/soju; \
-    chown -R soju:soju /home/soju/uploads /run/soju
+    DEBIAN_FRONTEND=noninteractive; \
+    export DEBIAN_FRONTEND; \
+    apt -y update; \
+    apt -y install tini soju; \
+    apt -y clean; \
+    rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*; \
+    usermod -s /bin/sh -c Soju -U soju; \
+    mkdir -p /var/lib/soju/logs /etc/ssl/certs/soju /home/soju/uploads /etc/soju /run/soju; \
+    chown -R soju:soju /etc/ssl/certs/soju /home/soju/uploads /run/soju
 
-VOLUME [ "/var/lib/soju" ]
-VOLUME [ "/etc/ssl/certs" ]
-VOLUME [ "/home/soju/uploads" ]
-VOLUME [ "/etc/soju" ]
+VOLUME /var/lib/soju
+VOLUME /etc/ssl/certs/soju
+VOLUME /home/soju/uploads
 
 COPY --chmod=0755 docker-entrypoint.sh /docker-entrypoint.sh
-COPY --chown=soju:soju config.default /root/soju_config.default
+COPY --chown=soju:soju config /etc/soju/config.no-hostname
 
-ENTRYPOINT [ "/sbin/tini", "--", "/docker-entrypoint.sh" ]
+ENTRYPOINT ["/usr/bin/tini", "--", "/docker-entrypoint.sh"]
