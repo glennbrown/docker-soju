@@ -24,6 +24,5 @@ VOLUME /etc/soju
 VOLUME /home/soju/uploads
 
 COPY --chmod=0755 docker-entrypoint.sh /docker-entrypoint.sh
-COPY --chown=soju:soju config /etc/soju/config.no-hostname
 
 ENTRYPOINT ["/usr/bin/tini", "--", "/docker-entrypoint.sh"]
