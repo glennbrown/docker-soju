@@ -1,0 +1,14 @@
+services:
+  soju:
+    restart: unless-stopped
+    container_name: soju
+    image: soju
+    volumes:
+      - ~/.config/soju/config:/etc/soju/config:ro
+      - ~/.config/soju/data:/var/lib/soju:Z
+      - ~/.local/share/soju/logs:/var/lib/soju/logs:Z
+      - ~/.local/share/soju/uploads:/home/soju/uploads:Z
+    ports:
+     - 6667:6667
+    environment:
+      - TZ=America/New_York

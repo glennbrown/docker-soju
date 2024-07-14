@@ -1,0 +1,10 @@
+title Soju
+hostname sojutest.mydomain.com
+
+db sqlite3 /var/lib/soju/main.db
+message-store fs /var/lib/soju/logs
+enable-user-on-auth true
+
+listen ircs://:6697
+tls /etc/ssl/certs/soju/soju.crt /etc/ssl/certs/soju/soju.key
+listen unix+admin://
