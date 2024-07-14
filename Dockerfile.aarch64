@@ -14,7 +14,7 @@ RUN set -ex; \
     DEBIAN_FRONTEND=noninteractive; \
     export DEBIAN_FRONTEND; \
     apt -y update; \
-    apt -y install tini soju; \
+    apt -y install soju; \
     apt -y clean; \
     rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*; \
     usermod -s /bin/sh -c Soju -U soju; \
@@ -24,8 +24,6 @@ RUN set -ex; \
 VOLUME /var/lib/soju
 VOLUME /etc/soju
 VOLUME /home/soju/uploads
-
-ENTRYPOINT [ "/usr/bin/tini", "---" ]
 
 USER soju
 
