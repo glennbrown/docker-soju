@@ -17,14 +17,13 @@ RUN set -ex; \
     apt -y install soju; \
     apt -y clean; \
     rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*; \
-    usermod -s /bin/sh -c Soju -U soju; \
-    mkdir -p /var/lib/soju/logs /etc/ssl/certs/soju /home/soju/uploads /etc/soju /run/soju; \
-    chown -R soju:soju /home/soju/uploads /run/soju
+    usermod -s /bin/sh -c Soju -U soju
 
 VOLUME /var/lib/soju
 VOLUME /etc/soju
 VOLUME /home/soju/uploads
 
-USER soju
+COPY --chmod=0755 docker-entrypoint.sh /docker-entrypoint.sh
+COPY --chown=soju:soju config /etc/soju/config.no-hostname
 
-CMD ["soju", "-config", "/etc/soju/config"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/docker-entrypoint.sh"]
