@@ -5,5 +5,5 @@ db sqlite3 /var/lib/soju/main.db
 message-store fs /var/lib/soju/logs
 enable-user-on-auth true
 
-listen ircs://:6667
+listen irc+insecure://:6667
 listen unix+admin:// 

@@ -1,7 +1,7 @@
 services:
   soju:
     restart: unless-stopped
-    container_name: soju
+    container_name: ghcr.io/glennbrown/soju:main
     image: soju
     volumes:
       - ~/.config/soju/config:/etc/soju/config:ro
