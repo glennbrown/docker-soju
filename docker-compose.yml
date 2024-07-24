@@ -1,14 +1,14 @@
 services:
   soju:
     restart: unless-stopped
-    container_name: ghcr.io/glennbrown/soju:main
-    image: soju
+    container_name: soju
+    image: ghcr.io/glennbrown/soju:latest
     volumes:
-      - ~/.config/soju/config:/etc/soju/config:ro
-      - ~/.config/soju/data:/var/lib/soju:Z
+      - /etc/localtime:/etc/localtime:ro
+      - ~/.config/soju:/var/lib/soju:Z
       - ~/.local/share/soju/logs:/var/lib/soju/logs:Z
       - ~/.local/share/soju/uploads:/home/soju/uploads:Z
+      - /etc/letsencrypt/live/mydomain.com/fullchain.pem:/etc/ssl/certs/soju/soju.crt
+      - /etc/letsencrypt/live/mydomain.com/privkey.pem:/etc/ssl/certs/soju/soju.key
     ports:
-     - 6667:6667
-    environment:
-      - TZ=America/New_York
+     - 46697:6697
